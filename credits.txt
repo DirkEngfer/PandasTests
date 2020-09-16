@@ -1,0 +1,10 @@
+Creator: EEA - European Environment Agency, Copenhagen
+Title: National emissions reported to the Convention on Long-range Transboundary Air Pollution (LRTAP Convention)
+Copyright: European Environment Agency (EEA) is the owner of copyrights and database rights
+Copyright notice: Information, documents and material available on this website and for which the EEA holds the rights of use are public and may be re-used without prior permission, free of charge, for commercial or non-commercial purposes, provided that the EEA is always acknowledged as the original source of the material and that the original meaning or message of the content is not distorted. Such acknowledgment must be included in each copy of the material. The re-use of the content on the EEA website covers the reproduction, adaptation and/or distribution, irrespective of the means and/or the format used. The re-use of certain data may be subject to different conditions, and if so the item concerned is accompanied by a copyright mark or other mention of the specific conditions relating to it. The above mentioned permissions do not apply to content supplied by third parties. Therefore, for documents where the copyright lies with a third party, permission for reproduction must be obtained from the copyright holder.
+Copyright source: https://www.eea.europa.eu/legal/copyright
+Download date: 14-May-2020
+License notice: https://creativecommons.org/licenses/by/2.5/dk/deed.en_GB 
+Data download source: https://www.eea.europa.eu/data-and-maps/data/national-emissions-reported-to-the-convention-on-long-range-transboundary-air-pollution-lrtap-convention-13
+Disclaimer notice: No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+(Disclaimer source: https://creativecommons.org/licenses/by/2.5/dk/deed.en_GB)
