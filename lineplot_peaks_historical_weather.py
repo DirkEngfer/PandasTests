@@ -25,7 +25,14 @@ Copyright notice by data provider:
 https://www.dwd.de/DE/service/copyright/copyright_node.html
 '''
 
-# In[1]:
+
+'''
+Demonstration of:
+  - Working on "lag" records [emulating SAS Lag function] 
+  - Data munging without costly iteration (no itertuples() nor iterrows() ) but using .loc attribute
+  - Emulating LOCF 
+
+'''
 
 
 import os, numpy as np
@@ -37,14 +44,6 @@ datapath = os.path.join(homedir, 'Dokumente','python-apps','tensorflow', 'eu_air
 datafile = 'wetter_historical_Schleswig.csv'
 
 indatapath = os.path.join(datapath,datafile)
-
-'''
-Demonstration of:
-  - Working on "lag" records [emulating SAS Lag function] 
-  - Data munging without costly iteration (no itertuples() nor iterrows() ) but using .loc attribute
-  - Emulating LOCF 
-
-'''
 
 df = pd.read_csv(indatapath, header=0, sep=';',usecols=[1,14])
 df['start_dt'] = pd.to_datetime(df.MESS_DATUM_BEGINN, format='%Y%m%d')
@@ -115,7 +114,8 @@ df.peak_ffill.fillna(method='ffill', inplace=True)
 print(df)
 
 fig, ax = plt.subplots(figsize=[20,15])
-ax.plot(df['year'], df['peak_ffill'], label='Peak values of rainfall carried forward', color='b')
+ax.plot(df['year'], df['peak_ffill'], label='Peak values of precipitation carried forward', color='b')
+ax.plot(df['year'], df['rain'], label='Precipitation over years', color='grey')
 ax.scatter(df['year'], df.rain_peaks, color='b')
 
 ax.set_xlim(1960, 2018)
