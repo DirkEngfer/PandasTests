@@ -65,7 +65,7 @@ df = df.merge(valid, left_on='year', right_on='year_', how='inner', sort=False)
 # Build skeleton to complete all years in time range:
 skeleton = pd.DataFrame({'year':np.arange(1960, 2019)})
 yearly = df.groupby('year')['rain'].sum() # returns Series object
-df['yearly_mean'] = yearly.mean() # mean over all years
+df['mean_overall'] = yearly.mean() # mean over all years
 df = df.merge(yearly, left_on='year', right_on='year', how='inner')
 df.rename(columns={'rain_y':'rain'}, inplace=True) 
 # Get in full range of years from skeleton:
@@ -73,7 +73,7 @@ df.rename(columns={'rain_y':'rain'}, inplace=True)
 df = df.merge(skeleton, how='right', left_on='year_', right_on='year')
 df.rename(columns={'year_y':'year'}, inplace=True)
 df.drop(columns='year_x', inplace=True)
-df = df.loc[:, ['year','rain']]
+df = df.loc[:, ['year','rain', 'mean_overall']]
 df.drop_duplicates(inplace=True)
 df.reset_index(inplace=True, drop=True)
 df['peak'] = 0
@@ -111,6 +111,7 @@ def process_rows(tup):
 [process_rows([x,y]) for x,y in zip(df.index, df.rain)]
 df['rain_peaks'] = df.peak_ffill
 df.peak_ffill.fillna(method='ffill', inplace=True)
+df['r_mean'] = df['rain'].rolling(10).mean()
 print(df)
 
 fig, ax = plt.subplots(figsize=[20,15])
@@ -129,6 +130,31 @@ plt.xlabel('1960 - 2018', fontsize='xx-large')
 plt.ylabel('Precipitation in mm', fontsize='xx-large')
 fig.autofmt_xdate(rotation=30)
 plt.savefig('lineplot_peaks_carried_forward.png', dpi=None, facecolor='w', edgecolor='w',
+        orientation='landscape', format='png')
+
+fig, ax = plt.subplots(figsize=[20,15])
+ax.plot(df['year'], df['rain'], label='Precipitation over years', color='grey')
+ax.plot(df['year'], df['mean_overall'], label='Mean over time range', color='red')
+
+ax.plot(df['year'], df['r_mean'], label='Rolling mean (window: 10 years)', color='blue')
+
+ax.set_xlim(1960, 2018)
+ax.minorticks_on()
+ax.yaxis.set_tick_params(which='minor', bottom=False)
+ax.tick_params(labelsize=18)
+ax.xaxis.set_tick_params(which='minor', size=10,color='black',
+                         labelleft=False, labelright=False)
+ax.xaxis.set_tick_params(which='major', size=20,color='black',
+                         labelleft=True, labelright=False)
+
+ax.set_title('Yearly precipitation in city Schleswig', fontsize='xx-large')
+ax.legend(loc=3, prop={'size': 18})
+ax.grid(True)
+
+plt.xlabel('1960 - 2018', fontsize='xx-large')
+plt.ylabel('Precipitation in mm', fontsize='xx-large')
+fig.autofmt_xdate(rotation=30)
+plt.savefig('lineplot_rolling_mean.png', dpi=None, facecolor='w', edgecolor='w',
         orientation='landscape', format='png')
 
 
