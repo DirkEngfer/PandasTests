@@ -110,7 +110,9 @@ def process_rows(tup):
 			
 [process_rows([x,y]) for x,y in zip(df.index, df.rain)]
 df['rain_peaks'] = df.peak_ffill
+df['rain_locf'] = df.rain
 df.peak_ffill.fillna(method='ffill', inplace=True)
+df.rain_locf.fillna(method='ffill', inplace=True)
 df['r_mean'] = df['rain'].rolling(10).mean()
 print(df)
 
@@ -158,4 +160,30 @@ plt.savefig('lineplot_rolling_mean.png', dpi=None, facecolor='w', edgecolor='w',
         orientation='landscape', format='png')
 
 
+
+# do linear regression:
+import statsmodels.api as sm
+x = np.arange(1, len(df.year)+1)
+y = df.rain_locf # response
+X = x # predictor
+X = sm.add_constant(X)  # Adds a constant term to the predictor
+model = sm.OLS(y, X).fit()
+df['predicted'] = model.predict(X)
+
+fig, ax = plt.subplots(figsize=[10,7.5])
+ax.plot(df['year'], df['predicted'], label='Estimated precipitation (linear regression)', color='red')
+ax.scatter(df['year'], df.rain_locf, color='grey')
+
+ax.set_xlim(1960, 2018)
+ax.tick_params(labelsize=18)
+
+ax.set_title('Trend line: precipitation in city Schleswig', fontsize='xx-large')
+ax.legend(loc=3, prop={'size': 18})
+ax.grid(True)
+
+plt.xlabel('1960 - 2018', fontsize='xx-large')
+plt.ylabel('Precipitation in mm', fontsize='xx-large')
+fig.autofmt_xdate(rotation=30)
+plt.savefig('lineplot_linear_trend.png', dpi=None, facecolor='w', edgecolor='w',
+        orientation='landscape', format='png')
 
